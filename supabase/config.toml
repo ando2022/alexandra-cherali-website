@@ -7,3 +7,15 @@ enabled = true
 [functions.server]
 verify_jwt = false
 
+[functions.test]
+verify_jwt = false
+
+[functions.booking]
+verify_jwt = false
+
+[functions.simple]
+verify_jwt = false
+
+[functions.booking-simple]
+verify_jwt = false
+

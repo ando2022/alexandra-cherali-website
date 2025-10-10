@@ -1,7 +1,7 @@
 import { projectId, publicAnonKey } from './supabase/info';
 
 // Force rebuild - API configuration updated
-const API_BASE_URL = `https://${projectId}.supabase.co/functions/v1/server`;
+const API_BASE_URL = `https://${projectId}.supabase.co/functions/v1/booking-simple`;
 
 async function fetchAPI(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
@@ -38,7 +38,7 @@ export const api = {
     email: string;
     phone?: string;
     message?: string;
-  }) => fetchAPI('/bookings', {
+  }) => fetchAPI('', {
     method: 'POST',
     body: JSON.stringify(bookingData),
   }),

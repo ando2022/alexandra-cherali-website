@@ -138,6 +138,40 @@ app.get('/', (c) => {
   return c.json({ status: 'ok', timestamp: new Date().toISOString(), message: 'Server is running!' });
 });
 
+// Test booking endpoint
+app.post('/', async (c) => {
+  try {
+    const body = await c.req.json();
+    console.log('Received booking request:', body);
+    
+    // Simulate booking processing
+    const booking = {
+      id: crypto.randomUUID(),
+      ...body,
+      createdAt: new Date().toISOString(),
+    };
+    
+    // Send email notification
+    try {
+      const emailTemplate = getBookingNotificationEmail(booking);
+      await sendEmail(emailTemplate);
+      console.log('Email notification sent to admin');
+    } catch (emailError) {
+      console.error('Failed to send email:', emailError);
+    }
+    
+    return c.json({ 
+      success: true, 
+      message: 'Booking received successfully!',
+      data: booking,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error processing booking:', error);
+    return c.json({ error: 'Failed to process booking', details: error.message }, 500);
+  }
+});
+
 // Health check
 app.get('/health', (c) => {
   return c.json({ status: 'ok', timestamp: new Date().toISOString() });
