@@ -1,10 +1,12 @@
 import { projectId, publicAnonKey } from './supabase/info';
 
+// Force rebuild - API configuration updated
 const API_BASE_URL = `https://${projectId}.supabase.co/functions/v1/server`;
 
 async function fetchAPI(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
   console.log('API Request:', url, options);
+  console.log('Project ID:', projectId);
   
   const response = await fetch(url, {
     ...options,
