@@ -133,13 +133,18 @@ Booking ID: ${booking.id}
   }
 }
 
+// Root route
+app.get('/', (c) => {
+  return c.json({ status: 'ok', timestamp: new Date().toISOString(), message: 'Server is running!' });
+});
+
 // Health check
-app.get('/make-server-b97bd89f/health', (c) => {
+app.get('/health', (c) => {
   return c.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Submit a booking request
-app.post('/make-server-b97bd89f/bookings', async (c) => {
+app.post('/bookings', async (c) => {
   try {
     const body = await c.req.json();
     const { date, time, sessionType, name, email, phone, message } = body;
@@ -213,7 +218,7 @@ app.post('/make-server-b97bd89f/bookings', async (c) => {
 });
 
 // Get all bookings (for admin purposes)
-app.get('/make-server-b97bd89f/bookings', async (c) => {
+app.get('/bookings', async (c) => {
   try {
     const bookingIds = await kv.get('bookings:all') || [];
     const bookings = [];
@@ -233,7 +238,7 @@ app.get('/make-server-b97bd89f/bookings', async (c) => {
 });
 
 // Subscribe to newsletter
-app.post('/make-server-b97bd89f/newsletter/subscribe', async (c) => {
+app.post('/newsletter/subscribe', async (c) => {
   try {
     const body = await c.req.json();
     const { email } = body;
@@ -283,7 +288,7 @@ app.post('/make-server-b97bd89f/newsletter/subscribe', async (c) => {
 });
 
 // Get all newsletter subscribers
-app.get('/make-server-b97bd89f/newsletter/subscribers', async (c) => {
+app.get('/newsletter/subscribers', async (c) => {
   try {
     const subscriberEmails = await kv.get('subscribers:all') || [];
     const subscribers = [];
@@ -303,7 +308,7 @@ app.get('/make-server-b97bd89f/newsletter/subscribers', async (c) => {
 });
 
 // Submit contact form
-app.post('/make-server-b97bd89f/contact', async (c) => {
+app.post('/contact', async (c) => {
   try {
     const body = await c.req.json();
     const { name, email, subject, message } = body;
@@ -354,7 +359,7 @@ app.post('/make-server-b97bd89f/contact', async (c) => {
 });
 
 // Get all contact messages
-app.get('/make-server-b97bd89f/contact', async (c) => {
+app.get('/contact', async (c) => {
   try {
     const contactIds = await kv.get('contacts:all') || [];
     const contacts = [];
@@ -374,7 +379,7 @@ app.get('/make-server-b97bd89f/contact', async (c) => {
 });
 
 // Blog posts endpoints
-app.get('/make-server-b97bd89f/blog/posts', async (c) => {
+app.get('/blog/posts', async (c) => {
   try {
     const postIds = await kv.get('blog:posts:all') || [];
     const posts = [];
@@ -396,7 +401,7 @@ app.get('/make-server-b97bd89f/blog/posts', async (c) => {
   }
 });
 
-app.get('/make-server-b97bd89f/blog/posts/:id', async (c) => {
+app.get('/blog/posts/:id', async (c) => {
   try {
     const id = c.req.param('id');
     const post = await kv.get(`blog:post:${id}`);
