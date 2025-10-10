@@ -20,7 +20,7 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/make-server-b97bd89f/contact`, {
+      const response = await fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/server/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export function Contact() {
       }
     } catch (error) {
       console.error('Contact form error:', error);
-      alert(`❌ Error sending message: ${error.message}\n\nPlease try again or email me directly.`);
+      alert(`❌ Error sending message: ${error.message}\n\nPlease try again or email me directly at cdrw1201@gmail.com`);
     } finally {
       setIsSubmitting(false);
     }
@@ -174,7 +174,7 @@ export function Contact() {
               <p className="text-muted-foreground mb-4">
                 For direct inquiries, please use the contact form or send me an email.
               </p>
-              <p className="text-foreground">contact@alexandracherali.com</p>
+              <a href="mailto:cdrw1201@gmail.com" className="text-foreground hover:text-primary transition-colors">cdrw1201@gmail.com</a>
             </div>
           </div>
 
