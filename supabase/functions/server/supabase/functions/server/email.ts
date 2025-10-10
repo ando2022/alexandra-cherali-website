@@ -2,7 +2,7 @@
 // Get API key from environment variable
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-const ADMIN_EMAIL = Deno.env.get('ADMIN_EMAIL') || 'alexandra@example.com';
+const ADMIN_EMAIL = Deno.env.get('ADMIN_EMAIL') || 'cdrw1201@gmail.com';
 
 interface SendEmailOptions {
   to: string | string[];
