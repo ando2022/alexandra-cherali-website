@@ -3,8 +3,8 @@ import { cors } from 'npm:hono/cors';
 import { logger } from 'npm:hono/logger';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { google } from 'npm:googleapis@140';
-import * as kv from './kv_store.tsx';
-import { sendEmail, getBookingNotificationEmail, getContactNotificationEmail, getSubscriberNotificationEmail } from './email.tsx';
+import * as kv from './kv_store.ts';
+import { sendEmail, getBookingNotificationEmail, getContactNotificationEmail, getSubscriberNotificationEmail } from './email.ts';
 
 const app = new Hono();
 
