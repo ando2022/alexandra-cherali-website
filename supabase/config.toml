@@ -1,0 +1,9 @@
+# Supabase Configuration File
+# This file will be updated when you run: supabase link
+
+[auth]
+enabled = true
+
+[functions.server]
+verify_jwt = false
+
