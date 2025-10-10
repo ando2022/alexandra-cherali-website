@@ -2,6 +2,8 @@
 
 A beautiful, modern website for an art curator featuring portfolio showcase, booking system, blog, and admin dashboard.
 
+<!-- Force Vercel deployment -->
+
 ---
 
 ## 🚀 READY TO DEPLOY? START HERE!
