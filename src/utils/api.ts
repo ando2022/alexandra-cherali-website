@@ -3,7 +3,10 @@ import { projectId, publicAnonKey } from './supabase/info';
 const API_BASE_URL = `https://${projectId}.supabase.co/functions/v1/server`;
 
 async function fetchAPI(endpoint: string, options: RequestInit = {}) {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const url = `${API_BASE_URL}${endpoint}`;
+  console.log('API Request:', url, options);
+  
+  const response = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -12,8 +15,11 @@ async function fetchAPI(endpoint: string, options: RequestInit = {}) {
     },
   });
 
+  console.log('API Response:', response.status, response.statusText);
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: 'Unknown error' }));
+    console.error('API Error:', error);
     throw new Error(error.error || `API error: ${response.status}`);
   }
 
