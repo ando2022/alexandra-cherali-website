@@ -5,51 +5,7 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { useState } from 'react';
 
-// FORCE VERCEL REBUILD - Contact form fixed with mailto solution
 export function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // Validate required fields
-      if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-        throw new Error('Please fill in all required fields');
-      }
-
-      // Send to working backend
-      const response = await fetch('https://alexandra-contact-server-production.up.railway.app/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert('✅ Message sent successfully! Alexandra will get back to you soon.');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-      } else {
-        throw new Error(result.error || 'Failed to send message');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert(`❌ Error: ${error.message}\n\nPlease try again or email Alexandra directly at cdrw1201@gmail.com`);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -61,73 +17,31 @@ export function Contact() {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-12">
-        {/* Contact Form */}
-        <div>
-          <h2 className="mb-6">Send a Message</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Your name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-                className="mt-2"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your.email@example.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                className="mt-2"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="subject">Subject</Label>
-              <Input
-                id="subject"
-                type="text"
-                placeholder="What's this regarding?"
-                value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                required
-                className="mt-2"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="message">Message</Label>
-              <Textarea
-                id="message"
-                placeholder="Tell me more about your inquiry..."
-                rows={6}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-                className="mt-2"
-              />
-            </div>
-
-            <Button type="submit" size="lg" disabled={isSubmitting} className="w-full shadow-lg shadow-primary/20 disabled:opacity-50">
-              <Send size={16} className="mr-2" />
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </Button>
-          </form>
+      <div className="max-w-4xl mx-auto text-center">
+        {/* Direct Contact */}
+        <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8 border border-primary/20">
+          <h2 className="text-3xl font-bold mb-6">Contact Alexandra</h2>
+          <p className="text-lg mb-8 text-muted-foreground">
+            Ready to start your art education journey? Get in touch directly with Alexandra.
+          </p>
+          
+          <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-6 border border-primary/20">
+            <h3 className="text-xl font-semibold mb-4">Email Alexandra Directly</h3>
+            <a 
+              href="mailto:cdrw1201@gmail.com" 
+              className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+            >
+              cdrw1201@gmail.com
+            </a>
+            <p className="text-sm text-muted-foreground mt-2">
+              Click the email above to open your email client
+            </p>
+          </div>
         </div>
 
-        {/* Contact Information */}
-        <div>
-          <h2 className="mb-6">Connect With Me</h2>
+        {/* Additional Contact Information */}
+        <div className="mt-12">
+          <h2 className="mb-6">Connect With Alexandra</h2>
           
           <div className="space-y-6 mb-8">
             <div className="group border border-border rounded-xl p-6 hover:shadow-lg hover:shadow-primary/10 transition-all hover:border-primary/50">

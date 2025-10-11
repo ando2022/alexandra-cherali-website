@@ -76,46 +76,39 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
       return;
     }
 
+    if (!formData.name || !formData.email) {
+      alert('Please provide your name and email.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const bookingData = {
-        date: selectedDate.toDateString(),
-        time: selectedTime,
-        sessionType,
-        ...formData,
-      };
-
-      const response = await fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/make-server-b97bd89f/bookings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify(bookingData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        const successMessage = result.calendarEventCreated
-          ? `✅ Booking Confirmed!\n\nYour art education session has been scheduled:\n\n📅 ${selectedDate.toDateString()}\n⏰ ${selectedTime}\n📍 ${sessionTypes.find(t => t.value === sessionType)?.label}\n\nA calendar invite has been sent to ${formData.email}.\n${sessionType === 'online' ? 'The Google Meet link is included in the calendar event.' : 'See you at the studio in Zurich!'}\n\nLooking forward to our session!`
-          : `✅ Booking request submitted successfully!\n\nDate: ${selectedDate.toDateString()}\nTime: ${selectedTime}\n\nI will contact you at ${formData.email} soon to confirm your session!`;
-        
-        alert(successMessage);
-        
-        // Reset form
-        setSelectedDate(undefined);
-        setSelectedTime('');
-        setSessionType('');
-        setFormData({ name: '', email: '', phone: '', message: '' });
-        onOpenChange(false);
-      } else {
-        throw new Error(result.error || 'Failed to submit booking');
-      }
+      // Create mailto link with booking details
+      const sessionTypeLabel = sessionTypes.find(t => t.value === sessionType)?.label || sessionType;
+      const subject = encodeURIComponent(`Art Education Session Booking Request`);
+      const body = encodeURIComponent(
+        `Hello Alexandra,\n\nI would like to book an art education session with the following details:\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session Type: ${sessionTypeLabel}\n\n👤 My Details:\nName: ${formData.name}\nEmail: ${formData.email}${formData.phone ? `\nPhone: ${formData.phone}` : ''}${formData.message ? `\n\n📝 Additional Message:\n${formData.message}` : ''}\n\nPlease confirm if this time slot is available and let me know the next steps.\n\nThank you!\n\n---\nSent via Alexandra Cherali Website Booking System`
+      );
+      
+      const mailtoLink = `mailto:cdrw1201@gmail.com?subject=${subject}&body=${body}`;
+      
+      // Open email client
+      window.open(mailtoLink, '_blank');
+      
+      // Show success message
+      alert(`✅ Your booking request has been prepared!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypeLabel}\n\nYour email client will open with the booking details ready to send to Alexandra.\n\nSimply click "Send" in your email client to submit your booking request.\n\nAlexandra will contact you at ${formData.email} to confirm your session!`);
+      
+      // Reset form
+      setSelectedDate(undefined);
+      setSelectedTime('');
+      setSessionType('');
+      setFormData({ name: '', email: '', phone: '', message: '' });
+      onOpenChange(false);
+      
     } catch (error) {
       console.error('Booking error:', error);
-      alert(`❌ Error submitting booking: ${error.message}\n\nPlease try again or contact me directly.`);
+      alert(`❌ Error preparing booking: ${error.message}\n\nPlease try again or email Alexandra directly at cdrw1201@gmail.com`);
     } finally {
       setIsSubmitting(false);
     }
@@ -295,7 +288,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
               disabled={isSubmitting}
               className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/20 disabled:opacity-50"
             >
-              {isSubmitting ? 'Submitting...' : 'Request Booking'}
+              {isSubmitting ? 'Preparing...' : 'Request Booking'}
             </Button>
           </div>
         </form>
