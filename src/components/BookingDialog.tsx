@@ -48,7 +48,7 @@ const sessionTypes = [
   { value: 'online', label: 'Online Session', icon: Video },
 ];
 
-// FORCE VERCEL REBUILD - Web3Forms integration for 100% working email notifications
+// FORCE VERCEL REBUILD - Email notifications to cdrw1201@gmail.com via Web3Forms
 export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -109,7 +109,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         const result = await response.json();
 
         if (response.ok && result.success) {
-          alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Email notification sent to Alexandra at mybestdayistoday@gmail.com\n\nShe will contact you at ${formData.email} soon to confirm your session!`);
+          alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Email notification sent to Alexandra at cdrw1201@gmail.com\n\nShe will contact you at ${formData.email} soon to confirm your session!`);
           
           // Reset form
           setSelectedDate(undefined);
@@ -126,6 +126,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
       // Fallback: Direct email solution using web3forms
       const emailData = {
         access_key: 'a7024e86-547e-4302-996f-dadaa61defe8',
+        subject: `New Art Education Session Booking - ${formData.name}`,
         name: formData.name,
         email: formData.email,
         phone: formData.phone || 'Not provided',
@@ -133,8 +134,9 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         booking_time: selectedTime,
         session_type: sessionTypes.find(t => t.value === sessionType)?.label,
         message: formData.message || 'No additional message',
-        subject: `New Art Education Session Booking - ${formData.name}`,
-        to: 'mybestdayistoday@gmail.com'
+        from_name: formData.name,
+        from_email: formData.email,
+        replyto: formData.email
       };
 
       // Send email using web3forms (100% working solution)
@@ -149,7 +151,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
       const emailResult = await emailResponse.json();
 
       if (emailResult.success) {
-        alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Email notification sent to Alexandra at mybestdayistoday@gmail.com\n\nShe will contact you at ${formData.email} soon to confirm your session!`);
+        alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Email notification sent to Alexandra at cdrw1201@gmail.com\n\nShe will contact you at ${formData.email} soon to confirm your session!`);
         
         // Reset form
         setSelectedDate(undefined);
@@ -162,7 +164,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
       }
     } catch (error) {
       console.error('Booking error:', error);
-      alert(`❌ Error submitting booking: ${error.message}\n\nPlease try again or email Alexandra directly at mybestdayistoday@gmail.com`);
+      alert(`❌ Error submitting booking: ${error.message}\n\nPlease try again or email Alexandra directly at cdrw1201@gmail.com`);
     } finally {
       setIsSubmitting(false);
     }
