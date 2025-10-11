@@ -60,7 +60,11 @@ export function Home() {
               <img
                 src={profileImage}
                 alt="Alexandra Cherali"
-                className="w-full h-full object-cover object-[center_20%] scale-125"
+                className="w-full h-full object-cover object-[center_35%] scale-110"
+                style={{
+                  objectPosition: 'center 35%',
+                  transform: 'translate(-5%, -10%) scale(1.1)'
+                }}
               />
             </div>
             {/* Gradient ring */}
