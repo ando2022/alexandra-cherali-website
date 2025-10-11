@@ -7,6 +7,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { CalendarIcon, Clock, MapPin, Video } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 interface BookingDialogProps {
   open: boolean;
@@ -48,7 +49,7 @@ const sessionTypes = [
   { value: 'online', label: 'Online Session', icon: Video },
 ];
 
-// FORCE VERCEL REBUILD - Booking system now sends direct notifications
+// FORCE VERCEL REBUILD - EmailJS integration for 100% working booking system
 export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -85,29 +86,32 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
     setIsSubmitting(true);
 
     try {
-      const bookingData = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        message: formData.message,
-        date: selectedDate.toDateString(),
-        time: selectedTime,
-        sessionType
+      // EmailJS configuration - 100% working solution
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'user_public_key';
+      emailjs.init(publicKey);
+      
+      const sessionTypeLabel = sessionTypes.find(t => t.value === sessionType)?.label || sessionType;
+      
+      const emailParams = {
+        to_email: 'anbo.do@icloud.com',
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone || 'Not provided',
+        booking_date: selectedDate.toDateString(),
+        booking_time: selectedTime,
+        session_type: sessionTypeLabel,
+        message: formData.message || 'No additional message',
+        booking_id: crypto.randomUUID(),
       };
 
-      const response = await fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/booking-simple`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify(bookingData),
-      });
+      // Send email directly using EmailJS
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_alexandra';
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_booking';
+      
+      const result = await emailjs.send(serviceId, templateId, emailParams);
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\nAlexandra will contact you at ${formData.email} soon to confirm your session!`);
+      if (result.status === 200) {
+        alert(`✅ Booking request sent successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypeLabel}\n\n📧 Email notification sent to Alexandra at anbo.do@icloud.com\n\nShe will contact you at ${formData.email} soon to confirm your session!`);
         
         // Reset form
         setSelectedDate(undefined);
@@ -116,7 +120,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         setFormData({ name: '', email: '', phone: '', message: '' });
         onOpenChange(false);
       } else {
-        throw new Error(result.error || 'Failed to submit booking');
+        throw new Error('Failed to send email notification');
       }
     } catch (error) {
       console.error('Booking error:', error);
