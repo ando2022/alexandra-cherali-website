@@ -136,7 +136,10 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         message: formData.message || 'No additional message',
         from_name: formData.name,
         from_email: formData.email,
-        replyto: formData.email
+        replyto: formData.email,
+        // Force email to go to Alexandra
+        to: 'cdrw1201@gmail.com',
+        redirect: 'false'
       };
 
       // Send email using web3forms (100% working solution)
