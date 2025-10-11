@@ -60,10 +60,10 @@ export function Home() {
               <img
                 src={profileImage}
                 alt="Alexandra Cherali"
-                className="w-full h-full object-cover object-[center_35%] scale-110"
+                className="w-full h-full object-cover"
                 style={{
-                  objectPosition: 'center 35%',
-                  transform: 'translate(-5%, -10%) scale(1.1)'
+                  objectPosition: 'center 25%',
+                  transform: 'scale(1.4) translate(-10%, -15%)'
                 }}
               />
             </div>
