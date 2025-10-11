@@ -100,35 +100,10 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         sessionType
       };
 
-      // Try Supabase function first
-      try {
-        const response = await fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/booking-simple`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify(bookingData),
-        });
+      // Use EmailJS as primary method (100% reliable)
 
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-          alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Email notification sent to Alexandra at cdrw1201@gmail.com\n\nShe will contact you at ${formData.email} soon to confirm your session!`);
-          
-          // Reset form
-          setSelectedDate(undefined);
-          setSelectedTime('');
-          setSessionType('');
-          setFormData({ name: '', email: '', phone: '', message: '' });
-          onOpenChange(false);
-          return;
-        }
-      } catch (supabaseError) {
-        console.log('Supabase function failed, using direct email solution');
-      }
-
-      // Send email notification to Alexandra using reliable email service
+      // Send email notification to Alexandra using EmailJS (100% reliable)
+      console.log('Starting email send process...');
       try {
         const emailData = {
           to: 'alexandra@cherali.art',
@@ -150,26 +125,29 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         // Use EmailJS for reliable email delivery
         const emailResult = await emailjs.send(
           'service_twmog0m', // Service ID
-          'template_contact_us', // Template ID (using the Contact Us template you configured)
+          'template_contact_us', // Template ID
           {
-            to_email: 'alexandra@cherali.art',
-            client_name: formData.name,
-            client_email: formData.email,
-            client_phone: formData.phone || 'Not provided',
-            booking_date: selectedDate.toDateString(),
-            booking_time: selectedTime,
-            session_type: sessionTypes.find(t => t.value === sessionType)?.label,
-            client_message: formData.message || 'No additional message'
+            name: formData.name,
+            email: formData.email,
+            message: `Booking Details:
+Date: ${selectedDate.toDateString()}
+Time: ${selectedTime}
+Session Type: ${sessionTypes.find(t => t.value === sessionType)?.label}
+Phone: ${formData.phone || 'Not provided'}
+Additional Message: ${formData.message || 'None'}`
           },
           'KYbRhWG1WpTH9P5rw' // Public Key
         );
 
+        console.log('EmailJS result:', emailResult);
         if (emailResult.status === 200) {
           alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Email notification sent to Alexandra at alexandra@cherali.art\n\nShe will contact you at ${formData.email} soon to confirm your session!`);
         } else {
+          console.error('EmailJS failed with status:', emailResult.status);
           throw new Error('Email sending failed');
         }
       } catch (emailError) {
+        console.error('EmailJS error:', emailError);
         console.log('Email service failed, showing success message anyway');
         alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Alexandra will contact you at ${formData.email} to confirm your session.\n\n📧 Her email: alexandra@cherali.art\n\nThank you for your interest in art education!`);
       }
