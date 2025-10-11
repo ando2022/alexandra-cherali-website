@@ -53,7 +53,7 @@ const sessionTypes = [
 export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
   // Initialize EmailJS
   useEffect(() => {
-    emailjs.init('YOUR_EMAILJS_PUBLIC_KEY');
+    emailjs.init('EzghUxMaqwNzW4kWb');
   }, []);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -149,8 +149,8 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
 
         // Use EmailJS for reliable email delivery
         const emailResult = await emailjs.send(
-          'service_alexandra_art', // Service ID for cherali.art
-          'template_booking_notification', // Template ID
+          'service_twmog0m', // Service ID
+          'template_contact_us', // Template ID (using the Contact Us template you configured)
           {
             to_email: 'alexandra@cherali.art',
             client_name: formData.name,
@@ -161,7 +161,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
             session_type: sessionTypes.find(t => t.value === sessionType)?.label,
             client_message: formData.message || 'No additional message'
           },
-          'YOUR_EMAILJS_PUBLIC_KEY'
+          'EzghUxMaqwNzW4kWb' // Public Key
         );
 
         if (emailResult.status === 200) {
