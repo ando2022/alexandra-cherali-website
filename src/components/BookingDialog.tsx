@@ -124,7 +124,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
       }
 
       // 100% WORKING SOLUTION: Show success and provide direct contact
-      alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Alexandra will contact you at ${formData.email} to confirm your session.\n\n📧 Her email: cdrw1201@gmail.com\n\nThank you for your interest in art education!`);
+      alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\n📧 Alexandra will contact you at ${formData.email} to confirm your session.\n\n📧 Her email: alexandra@cherali.art\n\nThank you for your interest in art education!`);
       
       // Reset form
       setSelectedDate(undefined);

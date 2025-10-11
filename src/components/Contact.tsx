@@ -27,12 +27,12 @@ export function Contact() {
           
           <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-6 border border-primary/20">
             <h3 className="text-xl font-semibold mb-4">Email Alexandra Directly</h3>
-            <a 
-              href="mailto:cdrw1201@gmail.com" 
-              className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
-            >
-              cdrw1201@gmail.com
-            </a>
+                 <a 
+                   href="mailto:alexandra@cherali.art" 
+                   className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+                 >
+                   alexandra@cherali.art
+                 </a>
             <p className="text-sm text-muted-foreground mt-2">
               Click the email above to open your email client
             </p>
@@ -94,7 +94,7 @@ export function Contact() {
               <p className="text-muted-foreground mb-4">
                 For direct inquiries, please use the contact form or send me an email.
               </p>
-              <a href="mailto:cdrw1201@gmail.com" className="text-foreground hover:text-primary transition-colors">cdrw1201@gmail.com</a>
+                   <a href="mailto:alexandra@cherali.art" className="text-foreground hover:text-primary transition-colors">alexandra@cherali.art</a>
             </div>
           </div>
 
