@@ -20,26 +20,31 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/server/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert('✅ Thank you for your message! I will get back to you soon at ' + formData.email);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-      } else {
-        throw new Error(result.error || 'Failed to send message');
+      // Validate required fields
+      if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+        throw new Error('Please fill in all required fields');
       }
+
+      // Create mailto link with form data
+      const subject = encodeURIComponent(`Contact Form: ${formData.subject}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}\n\n---\nSent via Alexandra Cherali Website Contact Form`
+      );
+      
+      const mailtoLink = `mailto:cdrw1201@gmail.com?subject=${subject}&body=${body}`;
+      
+      // Open email client
+      window.open(mailtoLink, '_blank');
+      
+      // Show success message
+      alert('✅ Your message has been prepared! Your email client will open with the message ready to send to Alexandra.\n\nSimply click "Send" in your email client to deliver your message.');
+      
+      // Clear form
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      
     } catch (error) {
-      console.error('Contact form error:', error);
-      alert(`❌ Error sending message: ${error.message}\n\nPlease try again or email me directly at cdrw1201@gmail.com`);
+      console.error('Error preparing message:', error);
+      alert(`❌ Error: ${error.message}\n\nPlease try again or email Alexandra directly at cdrw1201@gmail.com`);
     } finally {
       setIsSubmitting(false);
     }
@@ -114,7 +119,7 @@ export function Contact() {
 
             <Button type="submit" size="lg" disabled={isSubmitting} className="w-full shadow-lg shadow-primary/20 disabled:opacity-50">
               <Send size={16} className="mr-2" />
-              {isSubmitting ? 'Sending...' : 'Send Message'}
+              {isSubmitting ? 'Preparing...' : 'Send Message'}
             </Button>
           </form>
         </div>

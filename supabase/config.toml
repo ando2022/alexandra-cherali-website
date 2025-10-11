@@ -19,3 +19,9 @@ verify_jwt = false
 [functions.booking-simple]
 verify_jwt = false
 
+[functions.email-test]
+verify_jwt = false
+
+[functions.contact-simple]
+verify_jwt = false
+
