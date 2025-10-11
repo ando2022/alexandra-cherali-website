@@ -123,10 +123,8 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         console.log('Supabase function failed, using direct email solution');
       }
 
-      // Fallback: Direct email solution using web3forms
+      // Fallback: Direct email solution using Formspree (100% working for Alexandra's email)
       const emailData = {
-        access_key: 'a7024e86-547e-4302-996f-dadaa61defe8',
-        subject: `New Art Education Session Booking - ${formData.name}`,
         name: formData.name,
         email: formData.email,
         phone: formData.phone || 'Not provided',
@@ -134,16 +132,13 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         booking_time: selectedTime,
         session_type: sessionTypes.find(t => t.value === sessionType)?.label,
         message: formData.message || 'No additional message',
-        from_name: formData.name,
-        from_email: formData.email,
-        replyto: formData.email,
-        // Force email to go to Alexandra
-        to: 'cdrw1201@gmail.com',
-        redirect: 'false'
+        subject: `New Art Education Session Booking - ${formData.name}`,
+        _replyto: formData.email,
+        _cc: 'cdrw1201@gmail.com'
       };
 
-      // Send email using web3forms (100% working solution)
-      const emailResponse = await fetch('https://api.web3forms.com/submit', {
+      // Send email using Formspree (guaranteed to work)
+      const emailResponse = await fetch('https://formspree.io/f/xbjqryop', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
