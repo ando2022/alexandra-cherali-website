@@ -48,6 +48,7 @@ const sessionTypes = [
   { value: 'online', label: 'Online Session', icon: Video },
 ];
 
+// FORCE VERCEL REBUILD - Booking system fixed with mailto solution
 export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string>('');
