@@ -92,7 +92,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
         `Hello Alexandra,\n\nI would like to book an art education session with the following details:\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session Type: ${sessionTypeLabel}\n\n👤 My Details:\nName: ${formData.name}\nEmail: ${formData.email}${formData.phone ? `\nPhone: ${formData.phone}` : ''}${formData.message ? `\n\n📝 Additional Message:\n${formData.message}` : ''}\n\nPlease confirm if this time slot is available and let me know the next steps.\n\nThank you!\n\n---\nSent via Alexandra Cherali Website Booking System`
       );
       
-      const mailtoLink = `mailto:cdrw1201@gmail.com?subject=${subject}&body=${body}`;
+      const mailtoLink = `mailto:anbo.do@icloud.com?subject=${subject}&body=${body}`;
       
       // Open email client
       window.open(mailtoLink, '_blank');
@@ -109,7 +109,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
       
     } catch (error) {
       console.error('Booking error:', error);
-      alert(`❌ Error preparing booking: ${error.message}\n\nPlease try again or email Alexandra directly at cdrw1201@gmail.com`);
+      alert(`❌ Error preparing booking: ${error.message}\n\nPlease try again or email Alexandra directly at anbo.do@icloud.com`);
     } finally {
       setIsSubmitting(false);
     }
