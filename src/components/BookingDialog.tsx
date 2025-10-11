@@ -130,7 +130,7 @@ Submitted via cherali.art`
         
         const emailResult = await emailjs.send(
           'service_twmog0m',
-          'template_contact_us',
+          'template_1frfczj',
           templateParams,
           'KYbRhWG1WpTH9P5rw'
         );
