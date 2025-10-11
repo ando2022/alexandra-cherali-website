@@ -1,6 +1,6 @@
 import { projectId, publicAnonKey } from './supabase/info';
 
-// Force rebuild - API configuration updated
+// WORKING BOOKING API - Force Vercel rebuild
 const API_BASE_URL = `https://${projectId}.supabase.co/functions/v1/booking-simple`;
 
 async function fetchAPI(endpoint: string, options: RequestInit = {}) {
