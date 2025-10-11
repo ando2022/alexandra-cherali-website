@@ -53,7 +53,7 @@ const sessionTypes = [
 export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
   // Initialize EmailJS
   useEffect(() => {
-    emailjs.init('EzghUxMaqwNzW4kWb');
+    emailjs.init('KYbRhWG1WpTH9P5rw');
   }, []);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -161,7 +161,7 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
             session_type: sessionTypes.find(t => t.value === sessionType)?.label,
             client_message: formData.message || 'No additional message'
           },
-          'EzghUxMaqwNzW4kWb' // Public Key
+          'KYbRhWG1WpTH9P5rw' // Public Key
         );
 
         if (emailResult.status === 200) {
