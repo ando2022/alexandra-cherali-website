@@ -48,7 +48,7 @@ const sessionTypes = [
   { value: 'online', label: 'Online Session', icon: Video },
 ];
 
-// FORCE VERCEL REBUILD - Booking system fixed with mailto solution
+// FORCE VERCEL REBUILD - Booking system now sends direct notifications
 export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -85,31 +85,42 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
     setIsSubmitting(true);
 
     try {
-      // Create mailto link with booking details
-      const sessionTypeLabel = sessionTypes.find(t => t.value === sessionType)?.label || sessionType;
-      const subject = encodeURIComponent(`Art Education Session Booking Request`);
-      const body = encodeURIComponent(
-        `Hello Alexandra,\n\nI would like to book an art education session with the following details:\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session Type: ${sessionTypeLabel}\n\n👤 My Details:\nName: ${formData.name}\nEmail: ${formData.email}${formData.phone ? `\nPhone: ${formData.phone}` : ''}${formData.message ? `\n\n📝 Additional Message:\n${formData.message}` : ''}\n\nPlease confirm if this time slot is available and let me know the next steps.\n\nThank you!\n\n---\nSent via Alexandra Cherali Website Booking System`
-      );
-      
-      const mailtoLink = `mailto:anbo.do@icloud.com?subject=${subject}&body=${body}`;
-      
-      // Open email client
-      window.open(mailtoLink, '_blank');
-      
-      // Show success message
-      alert(`✅ Your booking request has been prepared!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypeLabel}\n\nYour email client will open with the booking details ready to send to Alexandra.\n\nSimply click "Send" in your email client to submit your booking request.\n\nAlexandra will contact you at ${formData.email} to confirm your session!`);
-      
-      // Reset form
-      setSelectedDate(undefined);
-      setSelectedTime('');
-      setSessionType('');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-      onOpenChange(false);
-      
+      const bookingData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        date: selectedDate.toDateString(),
+        time: selectedTime,
+        sessionType
+      };
+
+      const response = await fetch(`https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/booking-simple`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        alert(`✅ Booking request submitted successfully!\n\n📅 Date: ${selectedDate.toDateString()}\n⏰ Time: ${selectedTime}\n📍 Session: ${sessionTypes.find(t => t.value === sessionType)?.label}\n\nAlexandra will contact you at ${formData.email} soon to confirm your session!`);
+        
+        // Reset form
+        setSelectedDate(undefined);
+        setSelectedTime('');
+        setSessionType('');
+        setFormData({ name: '', email: '', phone: '', message: '' });
+        onOpenChange(false);
+      } else {
+        throw new Error(result.error || 'Failed to submit booking');
+      }
     } catch (error) {
       console.error('Booking error:', error);
-      alert(`❌ Error preparing booking: ${error.message}\n\nPlease try again or email Alexandra directly at anbo.do@icloud.com`);
+      alert(`❌ Error submitting booking: ${error.message}\n\nPlease try again or email Alexandra directly at anbo.do@icloud.com`);
     } finally {
       setIsSubmitting(false);
     }
