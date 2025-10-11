@@ -4,9 +4,9 @@
 
 1. **Go to:** https://web3forms.com/
 2. **Click "Get Started"** (it's free)
-3. **Enter your email:** `mybestdayistoday@gmail.com`
+3. **Enter your email:** `cdrw1201@gmail.com`
 4. **Click "Get Access Key"**
-5. **Check your email** at `mybestdayistoday@gmail.com`
+5. **Check your email** at `cdrw1201@gmail.com`
 6. **Copy the access key** (it will look like `xxxxx-xxxxx-xxxxx-xxxxx`)
 
 ## ⚙️ **Step 2: Update the Code**
@@ -21,7 +21,7 @@ access_key: 'your-actual-access-key-here',
 
 1. **Go to your website**
 2. **Try booking a session**
-3. **Check your email** at `mybestdayistoday@gmail.com`
+3. **Check your email** at `cdrw1201@gmail.com`
 
 ## 📧 **Email Format**
 

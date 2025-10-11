@@ -120,7 +120,7 @@ async function sendBookingNotification(booking: any) {
 
     const emailData = {
       from: 'Alexandra Cherali <noreply@resend.dev>',
-      to: ['mybestdayistoday@gmail.com'],
+      to: ['cdrw1201@gmail.com'],
       subject: `New Booking Request - ${booking.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -179,7 +179,7 @@ async function sendContactNotification(contact: any) {
 
     const emailData = {
       from: 'Alexandra Cherali Website <noreply@resend.dev>',
-      to: ['mybestdayistoday@gmail.com'],
+      to: ['cdrw1201@gmail.com'],
       subject: `New Contact Message: ${contact.subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
