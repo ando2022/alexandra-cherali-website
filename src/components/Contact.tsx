@@ -5,6 +5,7 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { useState } from 'react';
 
+// FORCE VERCEL REBUILD - Contact form fixed with mailto solution
 export function Contact() {
   const [formData, setFormData] = useState({
     name: '',
