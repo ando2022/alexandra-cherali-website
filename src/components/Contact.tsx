@@ -26,25 +26,25 @@ export function Contact() {
         throw new Error('Please fill in all required fields');
       }
 
-      // Create mailto link with form data
-      const subject = encodeURIComponent(`Contact Form: ${formData.subject}`);
-      const body = encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}\n\n---\nSent via Alexandra Cherali Website Contact Form`
-      );
-      
-      const mailtoLink = `mailto:cdrw1201@gmail.com?subject=${subject}&body=${body}`;
-      
-      // Open email client
-      window.open(mailtoLink, '_blank');
-      
-      // Show success message
-      alert('✅ Your message has been prepared! Your email client will open with the message ready to send to Alexandra.\n\nSimply click "Send" in your email client to deliver your message.');
-      
-      // Clear form
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
+      // Send to working backend
+      const response = await fetch('https://alexandra-contact-server-production.up.railway.app/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        alert('✅ Message sent successfully! Alexandra will get back to you soon.');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        throw new Error(result.error || 'Failed to send message');
+      }
     } catch (error) {
-      console.error('Error preparing message:', error);
+      console.error('Error sending message:', error);
       alert(`❌ Error: ${error.message}\n\nPlease try again or email Alexandra directly at cdrw1201@gmail.com`);
     } finally {
       setIsSubmitting(false);
@@ -120,7 +120,7 @@ export function Contact() {
 
             <Button type="submit" size="lg" disabled={isSubmitting} className="w-full shadow-lg shadow-primary/20 disabled:opacity-50">
               <Send size={16} className="mr-2" />
-              {isSubmitting ? 'Preparing...' : 'Send Message'}
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </Button>
           </form>
         </div>
