@@ -1,6 +1,6 @@
 {
       "name": "Art Curator Website Build",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "private": true,
       "dependencies": {
             "@emailjs/browser": "^4.4.1",
