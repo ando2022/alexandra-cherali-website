@@ -105,38 +105,34 @@ export function BookingDialog({ open, onOpenChange }: BookingDialogProps) {
       // Send email notification to Alexandra using EmailJS (100% reliable)
       console.log('Starting email send process...');
       try {
-        const emailData = {
-          to: 'alexandra@cherali.art',
-          subject: `New Art Education Session Booking - ${formData.name}`,
-          html: `
-            <h2>New Art Education Session Booking</h2>
-            <p><strong>Client Name:</strong> ${formData.name}</p>
-            <p><strong>Email:</strong> ${formData.email}</p>
-            <p><strong>Phone:</strong> ${formData.phone || 'Not provided'}</p>
-            <p><strong>Date:</strong> ${selectedDate.toDateString()}</p>
-            <p><strong>Time:</strong> ${selectedTime}</p>
-            <p><strong>Session Type:</strong> ${sessionTypes.find(t => t.value === sessionType)?.label}</p>
-            <p><strong>Message:</strong> ${formData.message || 'No additional message'}</p>
-            <hr>
-            <p><em>This booking was submitted through the Art Curator website (cherali.art)</em></p>
-          `
-        };
 
         // Use EmailJS for reliable email delivery
-        const emailResult = await emailjs.send(
-          'service_twmog0m', // Service ID
-          'template_contact_us', // Template ID
-          {
-            name: formData.name,
-            email: formData.email,
-            message: `Booking Details:
+        const templateParams = {
+          name: formData.name,
+          email: formData.email,
+          message: `New Art Education Session Booking
+
+Client: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone || 'Not provided'}
+
+Booking Details:
 Date: ${selectedDate.toDateString()}
 Time: ${selectedTime}
 Session Type: ${sessionTypes.find(t => t.value === sessionType)?.label}
-Phone: ${formData.phone || 'Not provided'}
-Additional Message: ${formData.message || 'None'}`
-          },
-          'KYbRhWG1WpTH9P5rw' // Public Key
+
+Message: ${formData.message || 'None'}
+
+Submitted via cherali.art`
+        };
+
+        console.log('Sending with template params:', templateParams);
+        
+        const emailResult = await emailjs.send(
+          'service_twmog0m',
+          'template_contact_us',
+          templateParams,
+          'KYbRhWG1WpTH9P5rw'
         );
 
         console.log('EmailJS result:', emailResult);
